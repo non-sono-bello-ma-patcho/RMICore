@@ -1,7 +1,7 @@
 # RMICore
 Core for the RMIForum repo
 
-## RMIUtility API
+## Core.RMIUtility API
 ```java
 void serverSetup(Remote toExport, String LocalHost);
 void RMIShutDown(Remote toUnexport);

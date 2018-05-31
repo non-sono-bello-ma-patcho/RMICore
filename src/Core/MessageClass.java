@@ -1,3 +1,5 @@
+package Core;
+
 import java.io.Serializable;
 
 public class MessageClass implements Serializable {
