@@ -72,8 +72,7 @@ public class RMIUtility {
     }
 
     private void ExportNBind(Registry reg, Remote obj, String alias, int port) throws AlreadyBoundException, RemoteException {
-        Remote stub;
-        stub = UnicastRemoteObject.exportObject(obj, port);
+        Remote stub = UnicastRemoteObject.exportObject(obj, port);
         reg.bind(alias, stub);
     }
 }
