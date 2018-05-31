@@ -1,5 +1,4 @@
-package Core;
-
+package RMICore;
 import java.io.Serializable;
 
 public class MessageClass implements Serializable {

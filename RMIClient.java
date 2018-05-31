@@ -1,5 +1,4 @@
-package Core;
-
+package RMICore;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 

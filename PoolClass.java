@@ -1,5 +1,4 @@
-package Core;
-
+package RMICore;
 import java.util.concurrent.*;
 
 public class PoolClass {
