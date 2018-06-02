@@ -35,7 +35,7 @@ public class RMIUtility {
 
         } catch (AccessControlException e) {
             System.err.println("You must set policy in order to set registry!");
-            showStackTrace(e);
+            // showStackTrace(e);
             System.exit(1);
         } catch (RemoteException e) {
             System.err.println("Couldn't set registry, maybe you want to check stack trace?[S/n]");
