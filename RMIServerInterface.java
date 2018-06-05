@@ -9,5 +9,5 @@ public interface RMIServerInterface extends Remote {
     boolean ManageSubscribe(String TopicLabel, String User, boolean unsubscribe) throws RemoteException; /* metodo per iscrizione a topic... manca la dichiarazione di un metdodo per iscrizione al forum stesso*/
     boolean ManagePublish(MessageClass msg, String TopicName) throws RemoteException; // add message to  a topic convo
     boolean ManageAddTopic(String TopicName, String TopicOwner) throws RemoteException;
-    HashMap<String, TopicClass> getTopics() throws RemoteException;
+    TopicList getTopics() throws RemoteException;
 }
