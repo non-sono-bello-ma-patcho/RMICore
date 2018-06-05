@@ -49,7 +49,7 @@ public class TopicList {
 
     public Boolean remove(String TopicName){
         for(TopicClass t : topicList)
-            if(t.getName.equals(TopicName)){
+            if(t.getName().equals(TopicName)){
                 topicList.remove(t);
                 return true;
             }
