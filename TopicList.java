@@ -35,7 +35,7 @@ public class TopicList implements Serializable {
     }
 
     public List<MessageClass> getConversation(String topicname){
-        return getTopicNamed(topicname).getMessagesAsMessage();
+        return getTopicNamed(topicname).getConversation();
     }
 
     public TopicClass getTopicNamed(String topicName) throws NoSuchElementException{
