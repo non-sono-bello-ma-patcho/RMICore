@@ -41,4 +41,8 @@ public class TopicList {
         for(TopicClass t : topicList) if(t.getName().equals(topicName)) return t;
         return null;
     }
+
+    public T put(TopicClass tc){
+        return topicList.add(tc);
+    }
 }
