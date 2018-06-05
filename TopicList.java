@@ -36,7 +36,7 @@ public class TopicList {
         return getTopicNamed(topicname).getMessagesAsMessage();
     }
 
-    private TopicClass getTopicNamed(String topicName) throws NoSuchElementException{
+    public TopicClass getTopicNamed(String topicName) throws NoSuchElementException{
         if(!contains(topicName)) throw new NoSuchElementException();
         for(TopicClass t : topicList) if(t.getName().equals(topicName)) return t;
         return null;
