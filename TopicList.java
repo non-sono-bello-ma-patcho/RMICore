@@ -3,6 +3,7 @@ package RMIForum.RMICore;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class TopicList {
     private CopyOnWriteArrayList<TopicClass> topicList;
@@ -42,7 +43,16 @@ public class TopicList {
         return null;
     }
 
-    public T put(TopicClass tc){
+    public Boolean put(TopicClass tc){
         return topicList.add(tc);
+    }
+
+    public Boolean remove(String TopicName){
+        for(TopicClass t : topicList)
+            if(t.getName.equals(TopicName)){
+                topicList.remove(t);
+                return true;
+            }
+        return false;
     }
 }
