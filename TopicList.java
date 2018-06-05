@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class TopicList {
-    private List<TopicClass> topicList;
+    private CopyOnWriteArrayList<TopicClass> topicList;
 
     public TopicList(){
-        topicList = new ArrayList<>();
+        topicList = new CopyOnWriteArrayList<>();
     }
 
     /**
