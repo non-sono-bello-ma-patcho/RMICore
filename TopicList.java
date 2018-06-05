@@ -1,11 +1,12 @@
 package RMICore;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class TopicList {
+public class TopicList implements Serializable {
     private CopyOnWriteArrayList<TopicClass> topicList;
 
     public TopicList(){
