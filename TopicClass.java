@@ -15,9 +15,15 @@ public class TopicClass implements Serializable {
         Users = new ArrayList<>();
     }
 
+    public String getOwner(){
+        return Owner;
+    }
+    
     public boolean addUser(String username){
         return Users.add(username);
     }
+    
+    
     public boolean RemoveUser(String username) { return Users.remove(username); }
 
     public boolean addMessage(MessageClass msg){
