@@ -5,6 +5,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.ExportException;
 import java.rmi.server.UnicastRemoteObject;
 import java.security.AccessControlException;
 /* why won't you update? */
@@ -22,19 +23,18 @@ public class RMIUtility {
         Calias = ca;
     }
 
-    public void serverSetUp(Remote obj, String Localhost) {
+    public int serverSetUp(Remote obj, String Localhost) {
         System.setProperty("java.rmi.server.hostname", Localhost);
         System.setProperty("java.security.policy", System.getProperty("os.name").equals("Linux")?"/tmp/RMIServer.policy":"C:\\Users\\"+System.getProperty("user.name")+"\\AppData\\Local\\Temp\\RMIServer.policy"); // define directory for windows...        if (System.getSecurityManager()==null) System.setSecurityManager(new SecurityManager());
+        int res = -1;
         // RMIServer obj = new RMIServer();
         try {
             ServerRegistry=setRegistry(serverPort);
-            ExportNBind(ServerRegistry, obj, Salias,serverPort);
-
+            res = ExportNBind(ServerRegistry, obj, Salias,serverPort);
             System.err.println((obj instanceof RMIServerInterface?"Server up and running on:"+Localhost:"Registry correctly set")); /* non va bene per il client*/
-
         } catch (AccessControlException e) {
             System.err.println("You must set policy in order to set registry!");
-            showStackTrace(e);
+            // showStackTrace(e);
             System.exit(1);
         } catch (RemoteException e) {
             System.err.println("Couldn't set registry, maybe you want to check stack trace?[S/n]");
@@ -43,6 +43,7 @@ public class RMIUtility {
             System.err.println("Couldn't export and bind, maybe you want to check stack trace?[S/n]");
             showStackTrace(e);
         }
+        return res;
     }
 
     static void showStackTrace(Exception e){
@@ -70,8 +71,15 @@ public class RMIUtility {
         }
     }
 
-    private void ExportNBind(Registry reg, Remote obj, String alias, int port) throws AlreadyBoundException, RemoteException {
-        Remote stub = UnicastRemoteObject.exportObject(obj, port);
-        reg.bind(alias, stub);
+    private int ExportNBind(Registry reg, Remote obj, String alias, int port) throws AlreadyBoundException, RemoteException {
+        int res = port;        
+        try {
+            Remote stub = UnicastRemoteObject.exportObject(obj, port);
+            reg.bind(alias, stub);
+        }
+        catch (ExportException e){
+            return ExportNBind(reg, obj, alias, port++);
+        }
+        return res;
     }
 }
