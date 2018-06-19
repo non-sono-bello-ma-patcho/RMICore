@@ -49,7 +49,7 @@ public class RMIUtility {
         if(sc.nextInt()!='n')*/ e.printStackTrace();
     }
 
-    public Remote getRemoteMethod(String host, int port) RemoteException, NotBoundException {
+    public Remote getRemoteMethod(String host, int port) throws RemoteException, NotBoundException {
         System.err.println("Trying to retrieve registry from"+host+"...");
         Registry registry = LocateRegistry.getRegistry(host, port);
         System.err.print("LookingUp for share Object: ");
