@@ -12,12 +12,10 @@ import java.security.AccessControlException;
 public class RMIUtility {
     private Registry ServerRegistry;
     private int serverPort;
-    private int clientPort;
     private String Salias;
     private  String Calias;
 
-    public RMIUtility (int sp, int cp, String sa, String ca){
-        clientPort = cp;
+    public RMIUtility (int sp, String sa, String ca){
         serverPort = sp;
         Salias = sa;
         Calias = ca;
@@ -51,9 +49,9 @@ public class RMIUtility {
         if(sc.nextInt()!='n')*/ e.printStackTrace();
     }
 
-    public Remote getRemoteMethod(String host) throws RemoteException, NotBoundException {
+    public Remote getRemoteMethod(String host, int port, RemoteException, NotBoundException {
         System.err.println("Trying to retrieve registry from"+host+"...");
-        Registry registry = LocateRegistry.getRegistry(host, clientPort);
+        Registry registry = LocateRegistry.getRegistry(host, port);
         System.err.print("LookingUp for share Object: ");
         return registry.lookup(Calias);
     }
@@ -72,14 +70,17 @@ public class RMIUtility {
     }
 
     private int ExportNBind(Registry reg, Remote obj, String alias, int port) throws AlreadyBoundException, RemoteException {
-        int res = port;        
-        try {
-            Remote stub = UnicastRemoteObject.exportObject(obj, port);
-            reg.bind(alias, stub);
+        int res = port;
+        Remote stub;
+        while(true) {
+            try {
+                stub = UnicastRemoteObject.exportObject(obj, port);
+                break;
+            } catch (ExportException e) {
+                port++;
+            }
         }
-        catch (ExportException e){
-            return ExportNBind(reg, obj, alias, port++);
-        }
+        reg.bind(alias, stub);
         return res;
     }
 }
