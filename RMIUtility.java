@@ -8,6 +8,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.ExportException;
 import java.rmi.server.UnicastRemoteObject;
 import java.security.AccessControlException;
+
 /* why won't you update? */
 public class RMIUtility {
     private Registry ServerRegistry;
@@ -27,7 +28,7 @@ public class RMIUtility {
         int res = -1;
         // RMIServer obj = new RMIServer();
         try {
-            ServerRegistry=setRegistry(serverPort);
+            serverPort=setRegistry();
             res = ExportNBind(ServerRegistry, obj, Salias,serverPort);
             System.err.println((obj instanceof RMIServerInterface?"Server up and running on:"+Localhost:"Registry correctly set")); /* non va bene per il client*/
         } catch (AccessControlException e) {
@@ -37,10 +38,10 @@ public class RMIUtility {
         } catch (RemoteException e) {
             System.err.println("Couldn't set registry, maybe you want to check stack trace?[S/n]");
             showStackTrace(e);
-        } catch (AlreadyBoundException e) {
-            System.err.println("Couldn't export and bind, maybe you want to check stack trace?[S/n]");
-            showStackTrace(e);
-        }
+        } /*catch (AlreadyBoundException e) {
+            System.err.println("Couldn't export and bind, on port "+ res +" maybe you want to check stack trace?[S/n]");
+            // showStackTrace(e);
+        }*/
         return res;
     }
 
@@ -61,27 +62,32 @@ public class RMIUtility {
         UnicastRemoteObject.unexportObject(obj, true);
     }
 
-    private Registry setRegistry(int port) throws RemoteException {
-        try {
-            return LocateRegistry.createRegistry(port);
-        } catch (RemoteException e) {
-            return LocateRegistry.getRegistry(port);
-        }
-    }
-
-    private int ExportNBind(Registry reg, Remote obj, String alias, int port) throws AlreadyBoundException, RemoteException {
-        int res = port;
-        Remote stub;
+    private int setRegistry() throws RemoteException {
+        int port = serverPort;
         while(true) {
             try {
-                stub = UnicastRemoteObject.exportObject(obj, port);
+                ServerRegistry = LocateRegistry.createRegistry(port);
                 break;
-            } catch (ExportException e) {
-                port++;
+            } catch (RemoteException e) {
+                // return LocateRegistry.getRegistry(port);
+                System.err.println("Port: " + port++ + " not available, updating....");
             }
         }
-        reg.bind(alias, stub);
-        return res;
+        return port;
+    }
+
+    private int ExportNBind(Registry reg, Remote obj, String alias, int port) throws RemoteException {
+        Remote stub;
+            try {
+                System.err.println("Exporting on port: "+port);
+                stub = UnicastRemoteObject.exportObject(obj, port);
+                reg.bind(alias, stub);
+            } catch (ExportException e) {
+                System.err.println(e.toString());
+            } catch (AlreadyBoundException e) {
+                System.err.println("This object is already bound");
+            }
+        return port;
     }
 }
 
