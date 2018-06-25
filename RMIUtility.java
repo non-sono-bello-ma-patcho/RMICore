@@ -28,7 +28,18 @@ public class RMIUtility {
         int res = -1;
         // RMIServer obj = new RMIServer();
         try {
-            serverPort=setRegistry();
+            while(true){
+                try{
+                    serverPort=setRegistry(serverPort);
+                    break;
+                } catch (RemoteException e){
+                    if ( obj instanceof RMIServerInterface ){
+                        System.err.println("A server instance is already running");
+                        System.exit(1);
+                    }
+                    serverPort++;
+                }
+            }
             res = ExportNBind(ServerRegistry, obj, Salias,serverPort);
             System.err.println((obj instanceof RMIServerInterface?"Server up and running on:"+Localhost:"Registry correctly set")); /* non va bene per il client*/
         } catch (AccessControlException e) {
@@ -62,17 +73,8 @@ public class RMIUtility {
         UnicastRemoteObject.unexportObject(obj, true);
     }
 
-    private int setRegistry() throws RemoteException {
-        int port = serverPort;
-        while(true) {
-            try {
-                ServerRegistry = LocateRegistry.createRegistry(port);
-                break;
-            } catch (RemoteException e) {
-                // return LocateRegistry.getRegistry(port);
-                System.err.println("Port: " + port++ + " not available, updating....");
-            }
-        }
+    private int setRegistry(int port) throws RemoteException {
+        ServerRegistry = LocateRegistry.createRegistry(port);
         return port;
     }
 
