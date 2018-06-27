@@ -24,7 +24,7 @@ public class RMIUtility {
 
     public int serverSetUp(Remote obj, String Localhost) {
         System.setProperty("java.rmi.server.hostname", Localhost);
-        System.setProperty("java.security.policy", System.getProperty("os.name").equals("Linux")?"/tmp/RMIServer.policy":"C:\\Users\\"+System.getProperty("user.name")+"\\AppData\\Local\\Temp\\RMIServer.policy"); // define directory for windows...        if (System.getSecurityManager()==null) System.setSecurityManager(new SecurityManager());
+        System.setProperty("java.security.policy", System.getProperty("java.io.tmpdir")+"/RMIServer.policy"); // define directory for windows...        if (System.getSecurityManager()==null) System.setSecurityManager(new SecurityManager());
         int res = -1;
         // RMIServer obj = new RMIServer();
         try {
