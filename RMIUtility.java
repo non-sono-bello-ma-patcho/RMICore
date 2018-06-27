@@ -1,4 +1,7 @@
 package RMIForum.RMICore;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
@@ -24,7 +27,7 @@ public class RMIUtility {
 
     public int serverSetUp(Remote obj, String Localhost) {
         System.setProperty("java.rmi.server.hostname", Localhost);
-        System.setProperty("java.security.policy", System.getProperty("java.io.tmpdir")+"/RMIServer.policy"); // define directory for windows...        if (System.getSecurityManager()==null) System.setSecurityManager(new SecurityManager());
+        System.setProperty("java.security.policy", policyFile()); // define directory for windows...        if (System.getSecurityManager()==null) System.setSecurityManager(new SecurityManager());
         int res = -1;
         // RMIServer obj = new RMIServer();
         try {
@@ -91,5 +94,22 @@ public class RMIUtility {
             }
         return port;
     }
+
+    private String policyFile() {
+        File policy = null;
+        try {
+            policy = File.createTempFile("RMIServer", ".policy");
+        // magari ci scriviamo sopra qualcosa va(?)
+        PrintWriter pw = new PrintWriter(policy, "UTF-8");
+        pw.println("\"grant {\n\tpermission java.security.AllPermission\n};");
+        pw.close();
+        return policy.getAbsolutePath();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null; //TODO: modify return....
+    }
+
 }
+
 
