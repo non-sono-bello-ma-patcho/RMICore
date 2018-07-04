@@ -24,7 +24,13 @@ public class TopicClass implements Serializable {
     }
     
     public boolean RemoveUser(String username) { return Users.remove(username); }
-    public boolean RemoveMessage(String message) { return Convo.remove(message); } 
+    public boolean removeMessage(String msg){
+        for (MessageClass mc : Convo ){
+            if(mc.getFormatMsg().equals(msg)) Convo.remove(mc);
+            return true;
+        }
+        return false;
+    }
 
     public boolean addMessage(MessageClass msg){
         return Convo.add(msg);
