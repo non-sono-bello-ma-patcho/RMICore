@@ -39,7 +39,6 @@ public class TopicList implements Serializable {
     }
 
     public TopicClass getTopicNamed(String topicName) throws NoSuchElementException{
-        if(!contains(topicName)) throw new NoSuchElementException();
         for(TopicClass t : topicList) if(t.getName().equals(topicName)) return t;
         return null;
     }
