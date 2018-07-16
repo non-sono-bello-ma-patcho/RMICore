@@ -71,7 +71,7 @@ public class RMIUtility {
 
     public void RMIshutDown(Remote obj) throws RemoteException, NotBoundException {
         ServerRegistry.unbind(Salias);
-        UnicastRemoteObject.unexportObject(obj, true);
+        UnicastRemoteObject.unexportObject((RMIServerInterface)obj, true);
     }
 
     private int setRegistry(int port) throws RemoteException {
