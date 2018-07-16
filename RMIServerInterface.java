@@ -6,6 +6,7 @@ package RMIForum.RMICore;
 
 /* sentiti libero di fare le modifiche che vuoi.. ho solo messo per ora dei parametri che mi venivano bene nel lato client*/
 public interface RMIServerInterface extends Remote {
+<<<<<<< HEAD
         enum ConnResponse { UnsetPolicy, NoSuchObject, AlreadyExist, Success, NoSuchUser, cyclicityDetected};
         ConnResponse ManageConnection(String username, RMIClient stub, List<String> BrokerID, String op) throws RemoteException;
         boolean ManageSubscribe(String TopicLabel, String User, boolean unsubscribe) throws RemoteException; // metodo per iscrizione a topic... manca la dichiarazione di un metdodo per iscrizione al forum stesso*/
@@ -14,3 +15,12 @@ public interface RMIServerInterface extends Remote {
         boolean ImConnected(String user);
         TopicList getTopics() throws RemoteException;
 }
+=======
+    enum ConnResponse { UnsetPolicy, NoSuchObject, AlreadyExist, Success, NoSuchUser, cyclicityDetected};
+    ConnResponse ManageConnection(String username, RMIClient stub, List<String> BrokerID, String op) throws RemoteException;
+    boolean ManageSubscribe(String TopicLabel, String User, boolean unsubscribe) throws RemoteException; // metodo per iscrizione a topic... manca la dichiarazione di un metdodo per iscrizione al forum stesso*/
+        boolean ManagePublish(MessageClass msg, String TopicName) throws RemoteException; // add message to  a topic convo
+        boolean ManageAddTopic(String TopicName, String TopicOwner) throws RemoteException;
+        TopicList getTopics() throws RemoteException;
+}
+>>>>>>> c9231267a10217611ff6320cc65cef6f57ce7648

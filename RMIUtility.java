@@ -65,9 +65,7 @@ public class RMIUtility {
     }
 
     public Remote getRemoteMethod(String host, int port) throws RemoteException, NotBoundException {
-        System.err.println("Trying to retrieve registry from"+host+"...");
         Registry registry = LocateRegistry.getRegistry(host, port);
-        System.err.print("LookingUp for share Object: ");
         return registry.lookup(Calias);
     }
 
@@ -84,7 +82,6 @@ public class RMIUtility {
     private int ExportNBind(Registry reg, Remote obj, String alias, int port) throws RemoteException {
         Remote stub;
             try {
-                System.err.println("Exporting on port: "+port);
                 stub = UnicastRemoteObject.exportObject(obj, port);
                 reg.bind(alias, stub);
             } catch (ExportException e) {
